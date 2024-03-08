@@ -18,7 +18,7 @@ export IP=<ip-blue>
 
 sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn $IP -oG puertos
 
-cat puertos | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',' | xclip
+# cat puertos | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',' | xclip
 
 sudo nmap -p135,139,445,3389,49152,49153,49154,49158,49160 -sV -sC -n -vvv $IP -oN blue.nmap
 
