@@ -3,6 +3,7 @@
 ## Reconocimiento
 
 ```
+export IP=<ip-blue>
 ping -c3 <ip>
 
 mkdir -p CTF/Blue
