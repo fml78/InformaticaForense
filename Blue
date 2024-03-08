@@ -27,15 +27,15 @@ sudo nmap -p135,139,445,3389,49152,49153,49154,49158,49160 -sV -sC -n -vvv $IP -
 ### Recon windows
 
 ```
-crackmapexec smb 10.10.40.49
-smbmap -H 10.10.40.49
-smbmap -H 10.10.40.49 -u 'null'
+crackmapexec smb $IP
+smbmap -H $IP
+smbmap -H $IP -u 'null'
 ```
 
 ## Búsqueda de vulnerabilidades
 
 ```
-nmap -p445 -n -vvv --script vuln 10.10.40.49  -oN blue.vulns
+nmap -p445 -n -vvv --script vuln $IP  -oN blue.vulns
 ```
 
 ## Explotación
